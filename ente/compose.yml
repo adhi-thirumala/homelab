@@ -1,0 +1,45 @@
+services:
+  ente-postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ente
+      POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD}
+      POSTGRES_DB: ente_db
+    volumes:
+      # Local database copy; independent of the Compose project name.
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -d ente_db -U ente"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ente-internal
+  ente-museum:
+    image: ghcr.io/ente/server
+    restart: unless-stopped
+    depends_on:
+      ente-postgres:
+        condition: service_healthy
+    volumes:
+      - ./museum.yaml:/museum.yaml:ro
+    networks:
+      - ente-internal
+      - default
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/ping"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
+  ente-web:
+    image: ghcr.io/ente/web
+    restart: unless-stopped
+    environment:
+      ENTE_API_ORIGIN: https://photos-api.adhithirumala.com
+    networks:
+      - default
+networks:
+  ente-internal:
+    internal: true

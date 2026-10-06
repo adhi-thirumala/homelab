@@ -1,0 +1,17 @@
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: always
+    ports:
+      - 80:80 # Needed for the ACME HTTP-01 challenge.
+      - 443:443
+      - 443:443/udp # Needed for HTTP/3.
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/config:/config
+      - ./data/storage:/data
+    environment:
+      DOMAIN: "https://vw.adhithirumala.com" # Your domain.
+      EMAIL: "adhi.thirumala@gmail.com" # The email address to use for ACME registration.
+      LOG_FILE: "/data/access.log"

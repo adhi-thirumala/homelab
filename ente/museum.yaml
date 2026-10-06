@@ -1,0 +1,31 @@
+db:
+  host: ente-postgres
+  port: 5432
+  name: ente_db
+  user: ente
+  password: cczP2YasH8qEQ3LC5KvAKZF+sapRsW53iHHo3KAw4Es=
+
+s3:
+  # External HTTPS object storage
+  are_local_buckets: false
+
+  # Backblaze supports virtual-hosted bucket URLs,
+  # so path-style URLs aren't necessary.
+  use_path_style_urls: false
+
+  b2-eu-cen:
+    key: 0055cdee366b2870000000007
+    secret: K005ITB84OOvGpARa4IP5HXsfKx/wLA
+    endpoint: s3.us-east-005.backblazeb2.com
+    region: us-east-005
+    bucket: ente-photos-adhithirumala
+
+apps:
+  public-albums: https://photos-albums.adhithirumala.com
+
+key:
+  encryption: poZw1wtqZtC2eLJP+vBjh3OIsEtf7gqZmpPwmaC1E5U=
+  hash: eF2jPOHLBdxur9ZPEleFTK8xb3sfPxoh81uYemtud9VuilM4Yls8uYnwUaWDmrPPyO9V0FaSOGV12dGfMPLmlA==
+
+jwt:
+  secret: pAm3EF7W2Jk3XlzaDZgVY2dPKVFt3Fi8MngiMKc3lKM=

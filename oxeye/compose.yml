@@ -1,0 +1,16 @@
+services:
+  oxeye:
+    image: ghcr.io/adhi-thirumala/oxeye-backend:latest-arm64
+    container_name: oxeye
+    restart: unless-stopped
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DATABASE_PATH=/data/oxeye.db
+      - PUBLIC_URL=https://oxeye.adhithirumala.com/
+      - PORT=3000
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    volumes:
+      - ./data:/data
+    expose:
+      - 3000

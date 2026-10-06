@@ -1,0 +1,15 @@
+services:
+  tuwunel:
+    image: ghcr.io/matrix-construct/tuwunel:latest
+    container_name: tuwunel
+    restart: unless-stopped
+    environment:
+      TUWUNEL_SERVER_NAME: "adhithirumala.com"
+      TUWUNEL_ADDRESS: "0.0.0.0"
+      # Initially you can enable registration.
+      # I recommend using a token rather than leaving it open.
+      TUWUNEL_ALLOW_REGISTRATION: "true"
+      TUWUNEL_REGISTRATION_TOKEN: "${TUWUNEL_REGISTRATION_TOKEN}"
+    volumes:
+      # Local database copy; independent of the Compose project name.
+      - ./data:/var/lib/tuwunel

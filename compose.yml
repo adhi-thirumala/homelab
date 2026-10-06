@@ -1,0 +1,11 @@
+# Run Compose from this directory to share the root .env and homelab project.
+# Each included file resolves its data mounts relative to its service folder.
+include:
+  - ./watchtower/compose.yml
+  - ./vaultwarden/compose.yml
+  - ./oxeye/compose.yml
+  - ./website/compose.yml
+  - ./caddy/compose.yml
+  - ./chibisafe/compose.yml
+  - ./ente/compose.yml
+  - ./tuwunel/compose.yml

@@ -1,0 +1,7 @@
+services:
+  website:
+    image: ghcr.io/adhi-thirumala/website:latest-arm64
+    container_name: website
+    restart: always
+    expose:
+      - 80
