@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ente
-      POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD in the root .env}
       POSTGRES_DB: ente_db
     volumes:
       # Local database copy; independent of the Compose project name.
@@ -22,6 +22,13 @@ services:
     depends_on:
       ente-postgres:
         condition: service_healthy
+    environment:
+      ENTE_DB_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD in the root .env}
+      ENTE_S3_B2_EU_CEN_KEY: ${ENTE_S3_B2_EU_CEN_KEY:?Set ENTE_S3_B2_EU_CEN_KEY in the root .env}
+      ENTE_S3_B2_EU_CEN_SECRET: ${ENTE_S3_B2_EU_CEN_SECRET:?Set ENTE_S3_B2_EU_CEN_SECRET in the root .env}
+      ENTE_KEY_ENCRYPTION: ${ENTE_KEY_ENCRYPTION:?Set ENTE_KEY_ENCRYPTION in the root .env}
+      ENTE_KEY_HASH: ${ENTE_KEY_HASH:?Set ENTE_KEY_HASH in the root .env}
+      ENTE_JWT_SECRET: ${ENTE_JWT_SECRET:?Set ENTE_JWT_SECRET in the root .env}
     volumes:
       - ./museum.yaml:/museum.yaml:ro
     networks:

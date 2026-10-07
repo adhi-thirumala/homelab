@@ -1,2 +1,4 @@
 **/data/
 .env
+.env.rotation
+.ente-key-rotation.sql

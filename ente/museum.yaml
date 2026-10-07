@@ -1,9 +1,16 @@
+# Secret values live in the ignored root .env and are passed by Compose.
+# Museum's ENTE_* environment overrides replace these literal placeholders;
+# this YAML file itself does not interpolate environment variables.
+# Run Compose from the repository root. After editing .env, recreate Museum:
+# docker compose up -d --no-deps ente-museum
+# Back up .env securely with the database. Do not regenerate ENTE_KEY_ENCRYPTION
+# or ENTE_KEY_HASH for an existing database without migrating protected data.
 db:
   host: ente-postgres
   port: 5432
   name: ente_db
   user: ente
-  password: cczP2YasH8qEQ3LC5KvAKZF+sapRsW53iHHo3KAw4Es=
+  password: REPLACE_VIA_ENTE_DB_PASSWORD
 
 s3:
   # External HTTPS object storage
@@ -14,8 +21,8 @@ s3:
   use_path_style_urls: false
 
   b2-eu-cen:
-    key: 0055cdee366b2870000000007
-    secret: K005ITB84OOvGpARa4IP5HXsfKx/wLA
+    key: REPLACE_VIA_ENTE_S3_B2_EU_CEN_KEY
+    secret: REPLACE_VIA_ENTE_S3_B2_EU_CEN_SECRET
     endpoint: s3.us-east-005.backblazeb2.com
     region: us-east-005
     bucket: ente-photos-adhithirumala
@@ -24,8 +31,8 @@ apps:
   public-albums: https://photos-albums.adhithirumala.com
 
 key:
-  encryption: poZw1wtqZtC2eLJP+vBjh3OIsEtf7gqZmpPwmaC1E5U=
-  hash: eF2jPOHLBdxur9ZPEleFTK8xb3sfPxoh81uYemtud9VuilM4Yls8uYnwUaWDmrPPyO9V0FaSOGV12dGfMPLmlA==
+  encryption: REPLACE_VIA_ENTE_KEY_ENCRYPTION
+  hash: REPLACE_VIA_ENTE_KEY_HASH
 
 jwt:
-  secret: pAm3EF7W2Jk3XlzaDZgVY2dPKVFt3Fi8MngiMKc3lKM=
+  secret: REPLACE_VIA_ENTE_JWT_SECRET
