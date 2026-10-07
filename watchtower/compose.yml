@@ -6,8 +6,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - WATCHTOWER_CLEANUP=true # remove old images
-      - WATCHTOWER_SCHEDULE=0 0 7 * * 0 # 3am daily (6-field cron)
+      - WATCHTOWER_SCHEDULE=0 0 7 * * * # daily at 07:00 UTC (6-field cron)
       - WATCHTOWER_ROLLING_RESTART=true # restart one at a time, not all at once
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
-      - WATCHTOWER_NOTIFICATION_URL=matrix://:${MATRIX_ACCESS_TOKEN}@matrix.org
+      - WATCHTOWER_NOTIFICATION_URL=matrix://:${MATRIX_ACCESS_TOKEN:?Set MATRIX_ACCESS_TOKEN in /etc/matrix-apt-notify.conf}@matrix.org
       - DOCKER_API_VERSION=1.41 # <--- Add this line

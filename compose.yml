@@ -1,7 +1,10 @@
 # Run Compose from this directory to share the root .env and homelab project.
 # Each included file resolves its data mounts relative to its service folder.
 include:
-  - ./watchtower/compose.yml
+  # APT and Watchtower share one token. After changing it, run:
+  # docker compose up -d --no-deps watchtower
+  - path: ./watchtower/compose.yml
+    env_file: /etc/matrix-apt-notify.conf
   - ./vaultwarden/compose.yml
   - ./oxeye/compose.yml
   - ./website/compose.yml
