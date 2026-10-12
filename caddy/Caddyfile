@@ -20,7 +20,7 @@ https://adhithirumala.com https://www.adhithirumala.com {
             Access-Control-Allow-Origin "*"
         }
 
-        respond `{"m.homeserver":{"base_url":"https://matrix.adhithirumala.com"}}`
+        respond `{"m.homeserver":{"base_url":"https://matrix.adhithirumala.com"},"org.matrix.msc4143.rtc_foci":[{"type":"livekit","livekit_service_url":"https://matrix-rtc.adhithirumala.com"}]}`
     }
 
     # Matrix federation discovery
@@ -132,4 +132,25 @@ https://matrix.adhithirumala.com {
     encode zstd gzip
 
     reverse_proxy tuwunel:8008
+}
+
+https://matrix-rtc.adhithirumala.com {
+    log {
+        level INFO
+        output file {$LOG_FILE} {
+            roll_size 10MB
+            roll_keep 10
+        }
+    }
+
+    tls {$EMAIL}
+
+    @jwt_service path /sfu/get* /healthz* /get_token*
+    handle @jwt_service {
+        reverse_proxy matrix-rtc-jwt:8081
+    }
+    handle {
+        # Caddy handles WebSocket upgrades automatically.
+        reverse_proxy matrix-rtc-livekit:7880
+    }
 }

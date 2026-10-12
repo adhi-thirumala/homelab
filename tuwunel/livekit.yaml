@@ -1,0 +1,15 @@
+port: 7880
+bind_addresses:
+  - "0.0.0.0"
+rtc:
+  tcp_port: 7881
+  port_range_start: 50100
+  port_range_end: 50200
+  # OCI maps the instance's public IPv4 to its private VNIC address.
+  use_external_ip: true
+  external_ip_only: true
+  enable_loopback_candidate: false
+room:
+  # Room creation goes through the Matrix-authenticated JWT service.
+  auto_create: false
+# API credentials come from LIVEKIT_KEYS in Compose, not this tracked file.

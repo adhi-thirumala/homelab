@@ -6,6 +6,8 @@ services:
     environment:
       TUWUNEL_SERVER_NAME: "adhithirumala.com"
       TUWUNEL_ADDRESS: "0.0.0.0"
+      # Caddy serves .well-known; Tuwunel also needs RTC API discovery.
+      TUWUNEL_WELL_KNOWN__LIVEKIT_URL: "https://matrix-rtc.adhithirumala.com"
       # Initially you can enable registration.
       # I recommend using a token rather than leaving it open.
       TUWUNEL_ALLOW_REGISTRATION: "true"
@@ -13,3 +15,30 @@ services:
     volumes:
       # Local database copy; independent of the Compose project name.
       - ./data:/var/lib/tuwunel
+
+  matrix-rtc-jwt:
+    image: ghcr.io/element-hq/lk-jwt-service:latest
+    container_name: matrix-rtc-jwt
+    restart: unless-stopped
+    environment:
+      LIVEKIT_JWT_BIND: ":8081"
+      LIVEKIT_URL: "wss://matrix-rtc.adhithirumala.com"
+      LIVEKIT_KEY: "${MRTCKEY:?Set MRTCKEY in the root .env}"
+      LIVEKIT_SECRET: "${MRTCSECRET:?Set MRTCSECRET in the root .env}"
+      LIVEKIT_FULL_ACCESS_HOMESERVERS: "adhithirumala.com"
+    # Only Caddy needs access; do not publish the token API on the host.
+
+  matrix-rtc-livekit:
+    image: livekit/livekit-server:latest
+    container_name: matrix-rtc-livekit
+    restart: unless-stopped
+    command: ["--config", "/etc/livekit.yaml"]
+    environment:
+      # LiveKit parses this as a YAML key/secret mapping.
+      LIVEKIT_KEYS: "${MRTCKEY:?Set MRTCKEY in the root .env}: ${MRTCSECRET:?Set MRTCSECRET in the root .env}"
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    # Keep signaling (7880) private on the shared Compose network.
+    ports:
+      - "7881:7881/tcp"
+      - "50100-50200:50100-50200/udp"
