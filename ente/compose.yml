@@ -7,7 +7,6 @@ services:
       POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD in the root .env}
       POSTGRES_DB: ente_db
     volumes:
-      # Local database copy; independent of the Compose project name.
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -q -d ente_db -U ente"]
